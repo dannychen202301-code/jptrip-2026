@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大地色系質感生活助手</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #F5F2ED; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
+        .tab-active { color: #8C7851; border-top: 2px solid #8C7851; }
+        .card { background: #FFFFFF; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="pb-24">
+    <div id="app" class="max-w-md mx-auto min-h-screen relative">
+        
+        <header class="p-6">
+            <h1 class="text-2xl font-bold text-stone-700">{{ currentTitle }}</h1>
+            <p class="text-stone-400 text-sm">歡迎回來，今天也要優雅地度過。</p>
+        </header>
+
+        <main class="px-4">
+            
+            <section v-if="activeTab === 'schedule'" class="space-y-4">
+                <div v-for="item in schedule" :key="item.time" class="card p-4 flex items-center gap-4">
+                    <div class="bg-stone-100 p-3 rounded-xl text-stone-600 font-medium text-sm w-16 text-center">
+                        {{ item.time }}
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-stone-700">{{ item.event }}</h3>
+                        <p class="text-xs text-stone-400">{{ item.location }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section v-if="activeTab === 'map'" class="card overflow-hidden h-96 flex flex-col">
+                <div class="bg-stone-200 flex-1 flex items-center justify-center text-stone-500">
+                    <div class="text-center">
+                        <i class="fa-solid fa-map-location-dot text-4xl mb-2"></i>
+                        <p>地圖組件載入中...</p>
+                    </div>
+                </div>
+                <div class="p-4 bg-white">
+                    <input type="text" placeholder="搜尋目的地..." class="w-full p-3 bg-stone-50 rounded-lg outline-none text-sm border border-stone-100">
+                </div>
+            </section>
+
+            <section v-if="activeTab === 'ledger'" class="space-y-4">
+                <div class="card p-6 bg-stone-700 text-stone-50">
+                    <p class="text-sm opacity-80">本月支出</p>
+                    <h2 class="text-3xl font-bold mt-1">$ 12,450</h2>
+                </div>
+                <div class="card p-4 space-y-3">
+                    <div v-for="expense in expenses" :key="expense.id" class="flex justify-between items-center border-b border-stone-50 pb-2">
+                        <div>
+                            <p class="font-medium text-stone-700">{{ expense.category }}</p>
+                            <p class="text-xs text-stone-400">{{ expense.date }}</p>
+                        </div>
+                        <span class="text-stone-600 font-semibold">- ${{ expense.amount }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <section v-if="activeTab === 'shopping'" class="space-y-3">
+                <div v-for="item in shoppingList" :key="item.id" class="card p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" v-model="item.done" class="w-5 h-5 accent-stone-500">
+                        <span :class="{'line-through text-stone-300': item.done}" class="text-stone-700">{{ item.name }}</span>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical text-stone-300"></i>
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-stone-100 px-6 py-3">
+            <div class="max-w-md mx-auto flex justify-between items-center">
+                <button @click="activeTab = 'schedule'" :class="{'text-stone-800': activeTab === 'schedule'}" class="flex flex-col items-center text-stone-400">
+                    <i class="fa-solid fa-calendar-day text-lg"></i>
+                    <span class="text-[10px] mt-1 font-bold">行程</span>
+                </button>
+                <button @click="activeTab = 'map'" :class="{'text-stone-800': activeTab === 'map'}" class="flex flex-col items-center text-stone-400">
+                    <i class="fa-solid fa-compass text-lg"></i>
+                    <span class="text-[10px] mt-1 font-bold">探索</span>
+                </button>
+                <button @click="activeTab = 'ledger'" :class="{'text-stone-800': activeTab === 'ledger'}" class="flex flex-col items-center text-stone-400">
+                    <i class="fa-solid fa-wallet text-lg"></i>
+                    <span class="text-[10px] mt-1 font-bold">記帳</span>
+                </button>
+                <button @click="activeTab = 'shopping'" :class="{'text-stone-800': activeTab === 'shopping'}" class="flex flex-col items-center text-stone-400">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span class="text-[10px] mt-1 font-bold">清單</span>
+                </button>
+            </div>
+        </nav>
+
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const activeTab = ref('schedule');
+                
+                const currentTitle = computed(() => {
+                    const titles = { schedule: '今日行程', map: '周邊地圖', ledger: '收支統計', shopping: '採買清單' };
+                    return titles[activeTab.value];
+                });
+
+                const schedule = ref([
+                    { time: '09:00', event: '晨間瑜珈', location: '社區公園' },
+                    { time: '14:30', event: '設計會議', location: '線上會議室' },
+                    { time: '19:00', event: '朋友聚餐', location: '森林系餐廳' }
+                ]);
+
+                const expenses = ref([
+                    { id: 1, category: '午餐外食', amount: 180, date: '2023-10-27' },
+                    { id: 2, category: '交通儲值', amount: 500, date: '2023-10-27' }
+                ]);
+
+                const shoppingList = ref([
+                    { id: 1, name: '燕麥奶', done: false },
+                    { id: 2, name: '全麥麵包', done: true },
+                    { id: 3, name: '香氛蠟燭', done: false }
+                ]);
+
+                return { activeTab, currentTitle, schedule, expenses, shoppingList };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
