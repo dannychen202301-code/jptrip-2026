@@ -2,72 +2,115 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的生活助手</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 日本翻越富士山</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        body { background-color: #F5F2ED; }
-        .card { background: white; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8f9fa; -webkit-tap-highlight-color: transparent; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 1rem; border: 1px solid #eee; overflow: hidden; }
+        .tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        .tag-food { background: #fff7ed; color: #c2410c; }
+        .tag-spot { background: #f0fdf4; color: #15803d; }
+        .nav-btn { background: #2d2d2d; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .weather-box { background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%); border-radius: 8px; padding: 8px; margin-bottom: 10px; font-size: 0.8rem; }
     </style>
 </head>
 <body class="pb-20">
-    <div id="app" class="max-w-md mx-auto p-4">
-        
-        <header class="py-6">
-            <h1 class="text-2xl font-bold text-stone-700">{{ titles[activeTab] }}</h1>
-        </header>
+    <header class="bg-white p-6 border-b sticky top-0 z-50 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-tight">2026 富士山大作戰</h1>
+            <p class="text-xs text-gray-400">自駕行程表 v1.1</p>
+        </div>
+        <div class="text-right">
+            <span class="text-xs bg-gray-100 px-2 py-1 rounded">🚗 自駕模式</span>
+        </div>
+    </header>
 
-        <div v-if="activeTab === 'schedule'">
-            <div class="card" v-for="s in schedule">
-                <p class="text-sm font-bold text-stone-500">{{ s.time }}</p>
-                <p class="text-lg text-stone-800">{{ s.event }}</p>
+    <main class="p-4 max-w-md mx-auto">
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-black text-white px-2 py-1 rounded text-sm">DAY 2</span>
+                <span class="text-lg">1/3 (六)</span>
+            </h2>
+            <div class="weather-box text-blue-700">📍 河口湖：☀️ 晴 / 5°C (建議穿發熱衣)</div>
+            
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-spot">第一站</span><h3 class="font-bold text-lg mt-1">新屋山神社</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=新屋山神社')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">💡 <b>攻略：</b> 日本三大財富神社，求財必訪！預計 12:00 抵達。</p>
             </div>
-        </div>
 
-        <div v-if="activeTab === 'map'" class="card h-64 flex items-center justify-center bg-stone-200">
-            <p class="text-stone-500">🗺️ 地圖功能準備中</p>
-        </div>
-
-        <div v-if="activeTab === 'ledger'">
-            <div class="card bg-stone-800 text-white">
-                <p>本月支出</p>
-                <p class="text-2xl font-bold">$ 12,500</p>
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-spot">景點</span><h3 class="font-bold text-lg mt-1">西湖 療癒之里根場</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=西湖療癒之里根場')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">14:00 抵達，合掌造村落適合拍照。</p>
             </div>
-        </div>
+        </section>
 
-        <div v-if="activeTab === 'shopping'">
-            <div class="card flex items-center gap-2" v-for="item in shopping">
-                <input type="checkbox" v-model="item.done">
-                <span :class="{'line-through text-gray-400': item.done}">{{ item.name }}</span>
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-black text-white px-2 py-1 rounded text-sm">DAY 3</span>
+                <span class="text-lg">1/4 (日)</span>
+            </h2>
+            <div class="card p-4 border-l-4 border-l-red-500">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-spot">必去</span><h3 class="font-bold text-lg mt-1">新倉山淺間公園</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=新倉山淺間公園')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">📸 <b>重要：</b> 10:20 抵達。需爬 398 階，拍五重塔+富士山。</p>
             </div>
-        </div>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-3">
-            <button @click="activeTab = 'schedule'" :class="{'text-orange-800 font-bold': activeTab === 'schedule'}">行程</button>
-            <button @click="activeTab = 'map'" :class="{'text-orange-800 font-bold': activeTab === 'map'}">地圖</button>
-            <button @click="activeTab = 'ledger'" :class="{'text-orange-800 font-bold': activeTab === 'ledger'}">記帳</button>
-            <button @click="activeTab = 'shopping'" :class="{'text-orange-800 font-bold': activeTab === 'shopping'}">清單</button>
-        </nav>
-    </div>
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-food">必吃</span><h3 class="font-bold text-lg mt-1">不動茶屋 (餺飥麵)</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=不動茶屋河口湖站前店')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">必點：<b>餺飥 (Houtou)</b>。11:30 集合用餐。</p>
+            </div>
 
-    <script>
-        const { createApp, ref } = Vue;
-        createApp({
-            setup() {
-                const activeTab = ref('schedule');
-                const titles = { schedule: '今日行程', map: '探索地圖', ledger: '收支統計', shopping: '購物清單' };
-                const schedule = ref([
-                    { time: '09:00', event: '早起運動' },
-                    { time: '12:00', event: '美味午餐' }
-                ]);
-                const shopping = ref([
-                    { name: '牛奶', done: false },
-                    { name: '咖啡豆', done: true }
-                ]);
-                return { activeTab, titles, schedule, shopping };
-            }
-        }).mount('#app');
-    </script>
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-spot">購物</span><h3 class="font-bold text-lg mt-1">御殿場 Outlet</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=Gotemba+Premium+Outlets')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">13:30 抵達，自駕最方便的購物聖地。</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-black text-white px-2 py-1 rounded text-sm">DAY 4</span>
+                <span class="text-lg">1/5 (一)</span>
+            </h2>
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-spot">體驗</span><h3 class="font-bold text-lg mt-1">箱根小涌園 Yunessun</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=箱根小涌園')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">🏊 <b>提醒：</b> 穿泳裝的溫泉樂園，預計 12:00 抵達。</p>
+            </div>
+            <div class="card p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div><span class="tag tag-food">名店</span><h3 class="font-bold text-lg mt-1">珊瑚礁咖哩</h3></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=珊瑚礁咖哩七里濱店')" class="nav-btn">導航</button>
+                </div>
+                <p class="text-sm text-gray-600">16:20 抵達。推薦牛肉咖哩，配海邊夕陽。</p>
+            </div>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-3 text-[10px] text-gray-400 font-bold shadow-lg z-50">
+        <div class="text-black text-center">🗺️<br>行程</div>
+        <div class="text-center">🏨<br>住宿</div>
+        <div class="text-center" onclick="alert('Firebase 記帳功能開發中')">💰<br>記帳</div>
+        <div class="text-center text-red-500">🚑<br>緊急</div>
+    </nav>
 </body>
 </html>
